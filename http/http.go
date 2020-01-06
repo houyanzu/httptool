@@ -30,10 +30,10 @@ func PostJSON(url string, js []byte) ([]byte, int, error) {
 }
 
 // PostForm .
-func PostForm(url string, form url.Values) ([]byte, error) {
+func PostForm(url string, form url.Values) ([]byte, int, error) {
 	resp, err := http.PostForm(url, form)
 	if err != nil {
-		return nil, err
+		return nil, 0, err
 	}
 
 	defer func() {
@@ -44,10 +44,10 @@ func PostForm(url string, form url.Values) ([]byte, error) {
 	}()
 	body, err := ioutil.ReadAll(resp.Body)
 	if err != nil {
-		return nil, err
+		return nil, 0, err
 	}
 
-	return body, nil
+	return body, resp.StatusCode, nil
 }
 
 // Get .
