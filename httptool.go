@@ -5,6 +5,7 @@ import (
 	"io/ioutil"
 	"net/http"
 	"net/url"
+	"time"
 )
 
 // PostJSON .
@@ -51,8 +52,11 @@ func PostForm(url string, form url.Values) ([]byte, int, error) {
 }
 
 // Get .
-func Get(url string) ([]byte, int, error) {
-	resp, err := http.Get(url)
+func Get(url string, timeout time.Duration) ([]byte, int, error) {
+	client := http.Client{
+		Timeout: timeout,
+	}
+	resp, err := client.Get(url)
 	if err != nil {
 		return nil, 0, err
 	}
